@@ -31,15 +31,18 @@ services:
     volumes:
       - ./files/digdag:/root
       - ./data/digdag_tmp:/tmp
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
       # - ./lectures/digdag/etl_files:/root/digdag_etl/
     depends_on:
       - mysql
       - digdagdb
     ports:
       - "0.0.0.0:65432:65432"
-    entrypoint: >
-      sh -c "chmod 755 /root/startup.sh && /root/startup.sh && /bin/bash"
+    # entrypoint: >
+    #   sh -c "/root/startup.sh && /bin/bash"
     container_name: pyspark_big
+    user: $UID:$GID
     networks:
       - app-net-big
   # ストリーミング
